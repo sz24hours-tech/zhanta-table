@@ -1,0 +1,18 @@
+/* MsIcon 两态机制（组件自带，2026-11-23 根治：原先散在主站 global.css，独立演示页
+   grid-demo.html 没引 global.css、实心份藏不住导致每个图标双份；规则随组件走后任何宿主不漏） */
+
+/* Material Symbols 图标两态：默认线框；菜单选中时切实心（选中交换规则在本文件下方） */
+.ms-ic { display: inline-flex; flex: none; line-height: 0; }
+
+.ant-menu .ms-ic, .ant-dropdown-menu .ms-ic { margin-inline-end: 10px; }
+.ms-ic .ms-svg { display: block; }
+/* 必须 !important：antd 运行时样式 .ant-menu .ant-menu-item .ant-menu-item-icon svg{display:inline-block}
+   特异性 (0,3,1) 高于本规则 (0,2,0)；MsIcon 自 2026-11-20 透传 ant-menu-item-icon 类后该规则开始命中，
+   实心态 SVG 被顶成可见、与线框态并排成「双图标」。选中态的两条交换规则同理加 !important 保序。 */
+.ms-ic .ms-f { display: none !important; }
+
+/* 选中态交换：主站外壳左菜单选中/父级选中时，线框份藏、实心份显 */
+.zt-shell .zt-menu .ant-menu-item-selected .ms-ic .ms-o,
+.zt-shell .zt-menu .ant-menu-submenu-selected > .ant-menu-submenu-title .ms-ic .ms-o { display: none !important; }
+.zt-shell .zt-menu .ant-menu-item-selected .ms-ic .ms-f,
+.zt-shell .zt-menu .ant-menu-submenu-selected > .ant-menu-submenu-title .ms-ic .ms-f { display: block !important; }

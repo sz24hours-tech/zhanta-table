@@ -1,0 +1,13 @@
+import { readFileSync, writeFileSync, readdirSync } from 'fs';
+const dir = new URL('./dist/', import.meta.url).pathname;
+const assets = readdirSync(dir + 'assets');
+const jsName = assets.find((f) => f.endsWith('.js'));
+const cssName = assets.find((f) => f.endsWith('.css'));
+let html = readFileSync(dir + 'index.html', 'utf8');
+const js = readFileSync(dir + 'assets/' + jsName, 'utf8');
+const css = readFileSync(dir + 'assets/' + cssName, 'utf8');
+html = html.replace(/<link[^>]*href="[^"]*\.css"[^>]*>/, () => '<style>' + css + '</style>');
+html = html.replace(/<script[^>]*src="[^"]*\.js"[^>]*><\/script>/, () => '<script type="module">' + js.replace(/<\/script>/g, '<\\/script>') + '</script>');
+const out = new URL('./grid-demo.html', import.meta.url).pathname;
+writeFileSync(out, html);
+console.log('written', out, html.length);
